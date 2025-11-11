@@ -1,0 +1,19 @@
+def sjf_preemptive(at, bt):
+    n=len(bt)
+    rt=bt[:];t=0;complete=0;wt=[0]*n;tat=[0]*n
+    while complete<n:
+        s=[i for i in range(n) if at[i]<=t and rt[i]>0]
+        if not s: t+=1;continue
+        i=min(s,key=lambda x:rt[x])
+        rt[i]-=1
+        if rt[i]==0:
+            complete+=1
+            ft=t+1
+            tat[i]=ft-at[i]
+            wt[i]=tat[i]-bt[i]
+        t+=1
+    print("Process\tBT\tWT\tTAT")
+    print(*[f"{i+1}\t{bt[i]}\t{wt[i]}\t{tat[i]}" for i in range(n)],sep="\n")
+    print("Avg WT=",sum(wt)/n,"Avg TAT=",sum(tat)/n)
+
+sjf_preemptive([0,2,4,5],[7,4,1,4])
