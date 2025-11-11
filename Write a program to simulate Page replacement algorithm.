@@ -1,0 +1,42 @@
+def fifo(pages, f):
+    frames=[];faults=0
+    for p in pages:
+        if p not in frames:
+            faults+=1
+            if len(frames)<f: frames.append(p)
+            else: frames.pop(0); frames.append(p)
+    return faults
+
+def lru(pages, f):
+    frames=[];used={};faults=0
+    for i,p in enumerate(pages):
+        if p in frames:
+            used[p]=i
+        else:
+            faults+=1
+            if len(frames)<f: frames.append(p)
+            else:
+                v=min(frames,key=lambda x:used.get(x,-1))
+                frames[frames.index(v)]=p
+            used[p]=i
+    return faults
+
+def optimal(pages, f):
+    frames=[];faults=0
+    for i,p in enumerate(pages):
+        if p in frames: continue
+        faults+=1
+        if len(frames)<f: frames.append(p); continue
+        nxt=[]
+        for x in frames:
+            try: nxt.append((pages[i+1:].index(x),x))
+            except: nxt.append((10**9,x))
+        v=max(nxt)[1]
+        frames[frames.index(v)]=p
+    return faults
+
+pages=[7,0,1,2,0,3,0,4,2,3,0,3,2]
+f=3
+print('FIFO',fifo(pages,f))
+print('LRU',lru(pages,f))
+print('OPT',optimal(pages,f))
