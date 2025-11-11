@@ -1,0 +1,22 @@
+def round_robin(bt, quantum):
+    n=len(bt)
+    wt=[0]*n;tat=[0]*n;rt=bt[:];t=0
+    while True:
+        done=True
+        for i in range(n):
+            if rt[i]>0:
+                done=False
+                if rt[i]>quantum:
+                    t+=quantum
+                    rt[i]-=quantum
+                else:
+                    t+=rt[i]
+                    wt[i]=t-bt[i]
+                    rt[i]=0
+        if done:break
+    for i in range(n): tat[i]=bt[i]+wt[i]
+    print("Process\tBT\tWT\tTAT")
+    print(*[f"{i+1}\t{bt[i]}\t{wt[i]}\t{tat[i]}" for i in range(n)],sep="\n")
+    print("Avg WT=",sum(wt)/n,"Avg TAT=",sum(tat)/n)
+
+round_robin([10,5,8],2)
