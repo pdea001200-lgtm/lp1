@@ -1,0 +1,15 @@
+def priority_np(pr, bt, at):
+    n=len(bt)
+    p=sorted(zip(pr,bt,at,range(n)))
+    t=0;wt=[0]*n;tat=[0]*n;done=[0]*n
+    while sum(done)<n:
+        r=[i for i,(prc,bt1,at1,idx) in enumerate(p) if at1<=t and not done[i]]
+        if not r: t+=1;continue
+        i=min(r,key=lambda x:p[x][0])
+        prc,bt1,at1,idx=p[i]
+        t+=bt1;tat[idx]=t-at1;wt[idx]=tat[idx]-bt1;done[i]=1
+    print("Process\tBT\tPR\tWT\tTAT")
+    print(*[f"{i+1}\t{bt[i]}\t{pr[i]}\t{wt[i]}\t{tat[i]}" for i in range(n)],sep="\n")
+    print("Avg WT=",sum(wt)/n,"Avg TAT=",sum(tat)/n)
+
+priority_np([2,1,3,2],[7,4,1,4],[0,2,4,5])
