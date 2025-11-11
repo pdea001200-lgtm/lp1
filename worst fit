@@ -1,0 +1,13 @@
+def worst_fit(blocks, procs):
+    b=blocks[:];alloc=[-1]*len(procs)
+    for i,p in enumerate(procs):
+        idx=-1;best=-1
+        for j,x in enumerate(b):
+            if x>=p and x>best: best=x; idx=j
+        if idx!=-1: alloc[i]=idx; b[idx]-=p
+    return alloc
+
+blocks=[100,500,200,300,600]
+procs=[212,417,112,426]
+a=worst_fit(blocks,procs)
+print(a)
